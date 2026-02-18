@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "frankenphp-cli"
+version = "0.1.0"
+description = "CLI for managing websites on Linux servers running FrankenPHP (Caddy-based)"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+authors = [{ name = "frankenphp-cli contributors" }]
+keywords = ["frankenphp", "caddy", "cli", "hosting", "wordpress"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+]
+dependencies = [
+    "typer>=0.9.0",
+    "mysql-connector-python>=8.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+]
+
+[project.scripts]
+franken = "frankenphp_cli.main:app"
+
+[project.urls]
+Repository = "https://github.com/frankenphp/frankenphp-cli"
+Documentation = "https://github.com/frankenphp/frankenphp-cli#readme"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["frankenphp_cli*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "C4"]
