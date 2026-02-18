@@ -10,11 +10,42 @@ A production-ready, open-source Python CLI for managing websites on Linux server
 - **User management**: Create and delete Linux users
 - **Safe by default**: Domain validation, subprocess (no raw shell), rollback on failure, logging, JSON state
 
-## Requirements
+## Prerequisites (install before using the CLI)
 
-- **FrankenPHP** (Caddy + embedded PHP only; no PHP-FPM)
-- MySQL or MariaDB (root credentials for DB operations)
-- Python 3.10+
+These must be installed and running on the server where you use `franken`:
+
+| Requirement | Purpose | How to verify |
+|-------------|---------|----------------|
+| **Python 3.10+** | Run the CLI | `python3 --version` |
+| **FrankenPHP** (Caddy + embedded PHP) | Serve PHP sites | FrankenPHP binary in PATH or Caddy with FrankenPHP; config dir writable (e.g. `/etc/caddy/sites.d`) |
+| **MySQL or MariaDB** | Create DBs for sites/WordPress | Server listening on port 3306; root (or admin) user and password for `franken` to create databases |
+
+**Install all prerequisites (Ubuntu/Debian, one command)**
+
+```bash
+sudo apt update && sudo apt install -y python3 python3-venv pipx mysql-server && pipx ensurepath && sudo systemctl start mysql && sudo systemctl enable mysql
+```
+
+Then set the MySQL root password and export it for the CLI (run once):
+
+```bash
+sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'YourPassword'; FLUSH PRIVILEGES;" && export FRANKENPHP_DB_ROOT_PASSWORD='YourPassword'
+```
+
+Replace `YourPassword` with a strong password. Install the CLI with `pipx install frankenphp-cli`. FrankenPHP (Caddy + PHP) is not in apt; install it from [frankenphp.dev](https://frankenphp.dev) or run it via Docker when you are ready to serve sites.
+
+**One-time setup for the database**
+
+- Ensure MySQL/MariaDB is **running** (e.g. `systemctl status mysql` or `systemctl status mariadb`).
+- Set the root (or admin) password and expose it to the CLI via environment:
+  ```bash
+  export FRANKENPHP_DB_HOST=localhost
+  export FRANKENPHP_DB_ROOT_USER=root
+  export FRANKENPHP_DB_ROOT_PASSWORD=your_mysql_root_password
+  ```
+- Optional: create a dedicated MySQL user with `CREATE DATABASE` / `CREATE USER` / `GRANT` rights and use that instead of `root`.
+
+If you see **"Can't connect to MySQL server"** (e.g. 2003/111), the database server is not reachable: start the MySQL/MariaDB service and/or check `FRANKENPHP_DB_HOST` (and firewall) so the host and port are correct.
 
 ## Installation
 

@@ -74,7 +74,11 @@ def create_database(
         return db_name, db_user, db_password
     except MySQLError as e:
         logger.exception("Database creation failed: %s", e)
-        raise RuntimeError(f"Database creation failed: {e}") from e
+        hint = (
+            " Check that MySQL/MariaDB is running (e.g. systemctl status mysql) and "
+            "FRANKENPHP_DB_HOST, FRANKENPHP_DB_ROOT_USER, FRANKENPHP_DB_ROOT_PASSWORD are set."
+        )
+        raise RuntimeError(f"Database creation failed: {e}.{hint}") from e
 
 
 def delete_database(db_name: str, db_user: Optional[str] = None, dry_run: bool = False) -> None:
@@ -97,7 +101,11 @@ def delete_database(db_name: str, db_user: Optional[str] = None, dry_run: bool =
         logger.info("Deleted database %s and user %s", db_name, db_user)
     except MySQLError as e:
         logger.exception("Database deletion failed: %s", e)
-        raise RuntimeError(f"Database deletion failed: {e}") from e
+        hint = (
+            " Check that MySQL/MariaDB is running and "
+            "FRANKENPHP_DB_HOST, FRANKENPHP_DB_ROOT_USER, FRANKENPHP_DB_ROOT_PASSWORD are set."
+        )
+        raise RuntimeError(f"Database deletion failed: {e}.{hint}") from e
 
 
 def database_exists(db_name: str) -> bool:
