@@ -18,9 +18,19 @@ A production-ready, open-source Python CLI for managing websites on Linux server
 
 ## Installation
 
-**From PyPI** (after [releases](https://pypi.org/project/frankenphp-cli/)):
+On **Ubuntu 22.04+, Debian 12+**, and other systems that use [PEP 668](https://peps.python.org/pep-0668/) (externally managed Python environments), you should not install into the system Python. Use one of the methods below.
+
+**From PyPI — recommended: pipx** (isolated, global CLI):
 
 ```bash
+pipx install frankenphp-cli
+```
+
+**From PyPI — using a virtual environment**:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate   # or on Windows: .venv\Scripts\activate
 pip install frankenphp-cli
 ```
 
@@ -29,13 +39,14 @@ pip install frankenphp-cli
 ```bash
 git clone https://github.com/meetsohail/frankenphp-cli.git
 cd frankenphp-cli
-pip install .
-
-# Or install in editable mode
-pip install -e .
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e ".[dev]"
 ```
 
-The `franken` command will be available on your PATH.
+The `franken` command will be available on your PATH (with pipx it’s global; with a venv, activate the venv first).
+
+If you see **"externally-managed-environment"** when using `pip install` on Ubuntu/Debian, your distro enforces PEP 668—use **pipx** or a **venv** as above instead of installing into the system Python.
 
 For local or CI testing without root, set state and log to writable paths:
 
