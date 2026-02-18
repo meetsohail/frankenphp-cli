@@ -18,8 +18,15 @@ A production-ready, open-source Python CLI for managing websites on Linux server
 
 ## Installation
 
+**From PyPI** (after [releases](https://pypi.org/project/frankenphp-cli/)):
+
 ```bash
-# From source (recommended for development)
+pip install frankenphp-cli
+```
+
+**From source** (development):
+
+```bash
 git clone https://github.com/meetsohail/frankenphp-cli.git
 cd frankenphp-cli
 pip install .
@@ -153,6 +160,36 @@ pip install -e ".[dev]"
 # Run tests
 pytest tests/ -v
 ```
+
+## Publishing to PyPI (GitHub Automation)
+
+Releases are published to PyPI automatically when you push a **version tag**.
+
+### One-time setup
+
+1. Create an API token on [PyPI](https://pypi.org/manage/account/token/): Account → API tokens → Add API token (scope: entire account or just this project).
+2. In your GitHub repo: **Settings → Secrets and variables → Actions** → **New repository secret**:
+   - Name: `PYPI_API_TOKEN`
+   - Value: `pypi-...` (the token you copied).
+
+### Releasing a new version
+
+1. Bump the version in `pyproject.toml` (e.g. `version = "0.2.0"`).
+2. Commit and push, then create and push a tag matching the version:
+
+   ```bash
+   git tag v0.2.0
+   git push origin v0.2.0
+   ```
+
+3. The **Publish to PyPI** workflow runs: runs tests (Python 3.10–3.12), builds the package, and publishes to PyPI. Install with `pip install frankenphp-cli`.
+
+### TestPyPI (optional)
+
+To try the release flow without publishing to production PyPI:
+
+1. Create a token at [TestPyPI](https://test.pypi.org/manage/account/token/) and add it as `TESTPYPI_API_TOKEN` in GitHub Actions secrets.
+2. In the Actions tab, run the workflow **Publish to TestPyPI** manually. It will publish to TestPyPI; install with `pip install -i https://test.pypi.org/simple/ frankenphp-cli`.
 
 ## Contributing
 

@@ -38,12 +38,17 @@ dev = [
 franken = "frankenphp_cli.main:app"
 
 [project.urls]
-Repository = "https://github.com/frankenphp/frankenphp-cli"
-Documentation = "https://github.com/frankenphp/frankenphp-cli#readme"
+Homepage = "https://github.com/meetsohail/frankenphp-cli"
+Repository = "https://github.com/meetsohail/frankenphp-cli"
+Documentation = "https://github.com/meetsohail/frankenphp-cli#readme"
+Changelog = "https://github.com/meetsohail/frankenphp-cli/releases"
 
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["frankenphp_cli*"]
+
+[tool.setuptools.package-data]
+frankenphp_cli = ["templates/*.tpl"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
